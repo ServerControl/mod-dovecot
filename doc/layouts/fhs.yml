@@ -1,0 +1,107 @@
+Directories:
+   Base:
+      bin:
+         name: bin
+         chmod: 755
+         user: root
+         group: root
+   Configuration:
+      etc:
+         name: etc
+         chmod: 755
+         user: <%= ServerControl::Args->get->{'user'} %>
+         group: root
+      certs:
+         name: etc/certs
+         chmod: 700
+         user: <%= ServerControl::Args->get->{'user'} %>
+         group: root
+   Runtime:
+      pid:
+         name: var/run
+         chmod: 755
+         user: <%= ServerControl::Args->get->{'user'} %>
+         group: root
+      login:
+         name: var/run/login
+         chmod: 750
+         user: <%= ServerControl::Args->get->{'user'} %>
+         group: root
+      lib:
+         name: var/run/login/lib
+         chmod: 755
+         user: <%= ServerControl::Args->get->{'user'} %>
+         group: root
+      lib64:
+         name: var/run/login/lib64
+         chmod: 755
+         user: <%= ServerControl::Args->get->{'user'} %>
+         group: root
+      config:
+         name: var/run/login/etc
+         chmod: 755
+         user: <%= ServerControl::Args->get->{'user'} %>
+         group: root
+      log:
+         name: var/log
+         chmod: 755
+         user: <%= ServerControl::Args->get->{'user'} %>
+         group: <%= ServerControl::Args->get->{'group'} %>
+Files:
+   Exec:
+      dovecot:
+         name: bin/dovecot-<%= __PACKAGE__->get_name %>
+         link: <%= ServerControl::Schema->get('dovecot') %>
+      dovecot-auth:
+         name: bin/dovecot-auth
+         link: <%= ServerControl::Schema->get('dovecot-auth') %>
+      imap:
+         name: bin/imap
+         link: <%= ServerControl::Schema->get('imap') %>
+      imap-login:
+         name: bin/imap-login
+         link: <%= ServerControl::Schema->get('imap-login') %>
+      pop3:
+         name: bin/pop3
+         link: <%= ServerControl::Schema->get('pop3') %>
+      pop3-login:
+         name: bin/pop3-login
+         link: <%= ServerControl::Schema->get('pop3-login') %>
+      plugins-lda:
+         name: plugins-lda
+         link: <%= ServerControl::Schema->get('plugins-lda') %>
+      plugins-imap:
+         name: plugins-imap
+         link: <%= ServerControl::Schema->get('plugins-imap') %>
+      plugins-pop3:
+         name: plugins-pop3
+         link: <%= ServerControl::Schema->get('plugins-pop3') %>
+   Base:
+      resolv:
+         name: var/run/login/etc/resolv.conf
+         copy: <%= ServerControl::Schema->get('resolv') %>
+      hosts:
+         name: var/run/login/etc/hosts
+         copy: <%= ServerControl::Schema->get('hosts') %>
+      nsswitch:
+         name: var/run/login/etc/nsswitch.conf
+         copy: <%= ServerControl::Schema->get('nsswitch') %>
+      libnss_dns:
+         name: var/run/login/lib/libnss_dns.so.2
+         copy: <%= ServerControl::Schema->get('libnss_dns') %>
+      libresolv:
+         name: var/run/login/lib/libresolv.so.2
+         copy: <%= ServerControl::Schema->get('libresolv') %>
+      libc:
+         name: var/run/login/lib/libc.so.6
+         copy: <%= ServerControl::Schema->get('libc') %>
+      ld-linux-x86-64:
+         name: var/run/login/lib64/ld-linux-x86-64.so.2
+         copy: <%= ServerControl::Schema->get('ld-linux-x86-64') %>
+   Configuration:
+      conf:
+         name: etc/dovecot.conf
+         call: <% sub { ServerControl::Template->parse(@_);
+      mysql:
+         name: etc/mysql.conf
+         call: <% sub { ServerControl::Template->parse(@_);
